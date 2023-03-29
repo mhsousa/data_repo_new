@@ -1,0 +1,1360 @@
+<DOCTYPE! hmtl>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<html>
+    <meta charset="UTF-8">
+    <!--HEADERS START-->
+    <div class="header">
+        <iframe id="txtArea1" style="display:none"></iframe>
+        <!--Content before waves-->
+        <div class="inner-header d-flex justify-content-center">
+            <!--Just the logo.. Don't mind this-->
+            <svg version="1.1" class="logo" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" xml:space="preserve">
+            </svg>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+                integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+                crossorigin="anonymous">
+            
+            <img src="https://imesc.ma.gov.br/src/img/govMA.png" id="logo" width="250" height="100">
+            <img src="https://imesc.ma.gov.br/src/img/logo1-novo.png" id="logo2" width="300" height="190">
+           
+         
+         
+        </div>
+        <h1 style="text-align: center; font-weight: 600;font-size: 90px;">DATAIMESC</h1><br>
+        <h6 style="text-align: center;">LITE VERSION</h6><br>
+        <h2 id="titulo"></h2>
+        <h3 id="subtitulo"></h3>
+        <h3 id="unity"></h3>
+        <div >
+            <label for="cars" >Escolha uma série </label>
+            <select id="select_serie" class= "form-select" onchange="atualizar()"  data-size="2" style="position:relative;top:10px;left:35%;max-width: 30%;"> 
+                
+            </select>
+        </div>
+        <div id="load" style="margin-top:45px;"></div>
+        <br>
+        <br>
+        <!--Waves Container-->
+        <div>
+            <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+                <defs>
+                    <path id="gentle-wave"
+                        d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+                </defs>
+                <g class="parallax">
+                    <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+                    <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+                    <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+                    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+                </g>
+            </svg>
+        </div>
+        <!--Waves end-->
+
+    </div>
+    <!--Header ends-->
+
+    <div id="mySidenav" class="sidenav">
+        <a href="#" id="about"><strong>Quem somos</strong></a>
+        <a href="#" id="blog"><strong>Publicações</strong></a>
+        <a href="#" id="projects"><strong>Downloads</strong></a>
+        <a href="#" id="contact"><strong>Contato</strong></a>
+    </div>
+    
+    <div id="container2">
+        <br>
+        <div>
+                 <div id="local_cidade" style="margin-top:6px">
+                <label for="cidade">Selecione um recorte territorial para o gráfico</label>
+                <select id="cidade" name="cidade" onchange="trocaNivel()">
+                <option value="Brasil">...</option>
+            </select>
+            <br>
+            <br>
+      
+            <form id="graf_select">
+                <p>
+                Tipos de gráfico disponíveis:
+                </p>
+                <fieldset >
+              <input type="radio" value="line" name="radio1" class="radio_">
+              <label for="html" class="radio_">Linha</label><br>
+              <input type="radio" value="doughnut" name="radio1" class="radio_">
+              <label for="doughnut" class="radio_">Pizza</label><br>
+              <input type="radio"  value="bar" name="radio1"  class="radio_"checked>
+              <label for="bar" class="radio_">Barra</label>
+            </fieldset>
+            
+            </form>
+            <button id="btnFilterReg" onclick="atualizeBra()" class="btn btn-outline-success" 
+            >Download Gráfico </button>
+        </div>
+
+        <div id="chart-wrapper" style="margin-top: 20px;" >
+            
+                <canvas id="myChart" height="40vh" width="40vw"></canvas>
+            </div>
+        </div>
+        <div id="botoes" style=" margin-top: 20px;">
+            <p>Filtros disponíveis:</p>
+            <button id="btnFilterReg" onclick="atualizeBra()" class="btn btn-outline-primary"
+                >Brasil </button>
+            <button id="btnFilterReg" onclick="atualizeRegs()" class="btn btn-outline-primary"
+                >Regiões </button>
+            <button id="btnFilterReg" onclick="atualizeEst()" class="btn btn-outline-primary"
+                >Estados </button>
+            <button id="btnFilterReg" onclick="atualizeMuni()" class="btn btn-outline-primary"
+                >Cidades </button>
+            <button id="btnFilterReg" onclick="fnExcelReport()"
+                class="btn btn-outline-success">Download Tabela </button>
+
+        </div>
+        <div style="margin-top: 20px">
+            <table id="data-table" class="table table-striped"></table>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+<footer id="dk-footer" class="dk-footer" >
+        <div class="container" style="height:70px">
+            <div class="row">
+                <div class="col-md-12 col-lg-4">
+                    <div class="dk-footer-box-info">
+                        
+                            
+                     
+                        
+                        <div class="footer-social-link">
+                            <br>
+                            <br>
+                            <h3><strong>Para mais informações</strong></h3>
+                            <p>Nos siga nas redes sociais:</p>
+                            <ul>
+                                
+                                
+                                <li>
+                                    
+                                        <i class="fa fa-instagram"></i> @imesc_ma</i>
+                                   
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- End Social link -->
+                    </div>
+                    <!-- End Footer info -->
+                    <div class="footer-awarad">
+                        
+                        <p><strong>Governo do Maranhão</strong></p>
+                    </div>
+                </div>
+                <!-- End Col -->
+                <div class="col-md-12 col-lg-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="contact-us">
+                                <br>
+                                <div class="contact-icon">
+                                    <i class="fa fa-map-o" aria-hidden="true"></i>
+                                </div>
+                                <!-- End contact Icon -->
+                                <div class="contact-info">
+                                    
+                                    <h3 style="top:25px"><strong>Endereço</strong></ostrong></h3 >
+                                    <p>Av. do Vale, 13 - Jardim Renascença, São Luís - MA, 65075-660</p>
+                                </div>
+                                <!-- End Contact Info -->
+                            </div>
+                            <!-- End Contact Us -->
+                        </div>
+                        <!-- End Col -->
+                        <div class="col-md-6" >
+                            <div class="contact-us contact-us-last">
+                                <br>
+                                <div class="contact-icon">
+                                    <i class="fa fa-volume-control-phone" aria-hidden="true" style="position:relative;right:10px;"></i>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="footer-widget footer-left-widget">
+                                            <div class="section-heading">
+                                                
+                                        <div class="contact-info" style="position:relative;right:10px;" >
+                                            <h3><strong>Telefone para contato:</strong></h3>
+                                            <p> (98) 2016-7803</p>
+                                            
+                                        <!-- End Footer Widget -->
+                                    </div>
+                                <!-- End contact Icon -->
+                              
+                                </div>
+                                <!-- End Contact Info -->
+                                
+                            </div>
+                            <!-- End Contact Us -->
+                        </div>
+                        
+                        <!-- End Col -->
+                    </div>
+                    <!-- End Contact Row -->
+                    
+            
+                        <!-- End col -->
+                        <div class="col-md-12 col-lg-6">
+                            <div class="footer-widget">
+                                <div class="section-heading">
+                                    
+                                        </div>
+                                    </div>
+                                </form>
+                                <!-- End form -->
+                            </div>
+                            
+                            <!-- End footer widget -->
+                        </div>
+                        <!-- End Col -->
+                    </div>
+                    <!-- End Row -->
+                </div>
+                <!-- End Col -->
+            </div>
+            <!-- End Widget Row -->
+        </div>
+        <!-- End Contact Container -->
+       
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                       
+                    </div>
+                    <!-- End Col -->
+                    <div class="col-md-6">
+                      
+                    </div>
+                    <!-- End col -->
+                </div>
+                <!-- End Row -->
+            </div>
+            <!-- End Copyright Container -->
+        </div>
+        <!-- End Copyright -->
+        <!-- Back to top -->
+        <div id="back-to-top" class="back-to-top">
+            <button class="btn btn-dark" title="Back to Top" style="display: block;">
+                <i class="fa fa-angle-up"></i>
+            </button>
+        </div>
+        <!-- End Back to top -->
+        
+</footer>
+
+
+
+</html>
+
+
+
+<script>
+        var series_0={ "1":"1: Quantidade Produzida - Abacaxi"
+                 ,"2":"2: Quantidade Produzida - Algodão Herbáceo (em caroço)"
+                 ,"3":"3: Quantidade Produzida - Amendoim (em casca)"
+                 ,"4":"4: Quantidade Produzida - Arroz (em casca)"
+                 ,"5":" 5: Quantidade Produzida - Batata-Doce"
+                 ,"6":"6: Quantidade Produzida - Cana-de-Açúcar"
+                 ,"7":"7: Quantidade Produzida - Fava (em grão)"
+                 ,"8":"8: Quantidade Produzida - Feijão (em grão)"
+                 ,"9":"9: Quantidade Produzida - Mandioca"
+                 ,"10":"10: Quantidade Produzida - Melancia"
+                 ,"11":"11: Quantidade Produzida - Melão"
+                 ,"12":"12: Quantidade Produzida - Milho (em grão)"
+                 ,"13":"13: Quantidade Produzida - Soja (em grão)"
+                 ,"14":"14: Quantidade Produzida - Sorgo (em grão)"
+                 ,"15":"15: Quantidade Produzida - Tomate "
+                 ,"16":"16: Área Colhida Total - Lavoura Temporária"
+                 ,"17":"17: Área Colhida - Abacaxi"
+                 ,"18":"18: Área Colhida - Algodão Herbáceo"
+                 ,"19":"19: Área Colhida - Amendoim"
+                 ,"20":"20: Área Colhida - Arroz "
+                 ,"21":"21: Área Colhida - Batata-Doce"
+                 ,"22":"22: Área Colhida - Cana-de-Açúcar"
+                 ,"23":"23: Área Colhida - Fava"
+                 ,"24":"24: Área Colhida - Feijão"
+                 ,"25":" 25: Área Colhida - Mandioca"
+                 ,"26":"26: Área Colhida - Melancia"
+                 ,"27":"27: Área Colhida - Melão"
+                 ,"28":"28: Área Colhida - Milho"
+                 ,"29":"29: Área Colhida - Soja"
+                 ,"30":"30: Área Colhida - Sorgo"
+                 ,"31":"31: Área Colhida - Tomate"
+                 ,"32":"32: Rendimento Médio da Produção - Abacaxi"
+                 ,"33":" 33: Rendimento Médio da Produção - Algodão Herbáceo (em caroço)"
+                 ,"34":"34: Rendimento Médio da Produção - Amendoim (em casca)"
+                 ,"35":" 35: Rendimento Médio da Produção - Arroz (em casca)"
+                 ,"36":" 36: Rendimento Médio da Produção - Batata-Doce"
+                 ,"37":"37: Rendimento Médio da Produção - Cana-de-Açúcar"
+                 ,"38":"38: Rendimento Médio da Produção - Fava (em grão)"
+                 ,"39":"39: Rendimento Médio da Produção - Feijão (em grão)"
+                 ,"40":"40: Rendimento Médio da Produção - Mandioca"
+                 ,"41":"41: Rendimento Médio da Produção - Melancia"
+                 ,"42":"42: Rendimento Médio da Produção - Melão"
+                 ,"43":"43: Rendimento Médio da Produção - Milho (em grão)"
+                 ,"44":"44: Rendimento Médio da Produção - Soja (em grão)"
+                 ,"45":"45: Rendimento Médio da Produção - Sorgo (em grão) "
+                 ,"46":"46: Rendimento Médio da Produção - Tomate"
+                 ,"47":"47: Valor da Produção Total - Lavoura Temporária"
+                 ,"48":"48: Valor da Produção - Abacaxi"
+                 ,"49":"49: Valor da Produção - Algodão Herbáceo (em caroço)"
+                 ,"50":"50: Valor da Produção - Amendoim (em casca)"
+                 ,"51":"51 : Valor da Produção - Arroz (em casca)"
+                 ,"52":"52: Valor da Produção - Batata-Doce"
+                 ,"53":"53: Valor da Produção - Cana-de-Açúcar"
+                 ,"54":"54: Valor da Produção - Fava (em grão) "
+                 ,"55":"55: Valor da Produção - Feijão (em grão)"
+                 ,"56":"56: Valor da Produção - Mandioca "
+                 ,"57":"57: Valor da Produção - Melancia "
+                 ,"58":"58: Valor da Produção - Melão"
+                 ,"59":"59: Valor da Produção - Milho (em grão)"
+                 ,"60":"60: Valor da Produção - Soja (em grão)on:"
+                 ,"61":"61: Valor da Produção - Sorgo (em grão)"
+                 ,"62":"62: Valor da Produção - Tomate"
+                 ,"63":"63: Quantidade Produzida - Banana (cacho)"
+                 ,"64":"64: Quantidade Produzida - Borracha (látex coagulado)"
+                 ,"65":"65: Quantidade Produzida - Castanha de caju"
+                 ,"66":"66: Quantidade Produzida - Coco-da-baía "
+                 ,"67":"67: Quantidade Produzida - Laranja"
+                 ,"68":"68: Quantidade Produzida - Limão"
+                 ,"69":"69: Quantidade Produzida - Mamão"
+                 ,"70":"70: Quantidade Produzida - Manga"
+                 ,"71":"71: Quantidade Produzida - Maracujá"
+                 ,"72":"72: Quantidade Produzida - Pimenta-do-Reino"
+                 ,"73":"73: Quantidade Produzida - Tangerina"
+                 ,"74":"74: Quantidade Produzida - Urucum (semente)"
+                 ,"75":"75: Área Colhida Total - Lavoura Permanente"
+                 ,"76":"76: Área Colhida - Banana"
+                 ,"77":"77: Área Colhida - Borracha"
+                 ,"78":"78: Área Colhida - Castanha de caju"
+                 ,"79":"79: Área Colhida - Coco-da-baía"
+                 ,"80":"80: Área Colhida - Laranja"
+                 ,"81":"81: Área Colhida - Limão"
+                 ,"82":"82: Área Colhida - Mamão"
+                 ,"83":"83: Área Colhida - Manga"
+                 ,"84":"84: Área Colhida - Maracujá"
+                 ,"85":"85: Área Colhida - Pimenta-do-Reino"
+                 ,"86":"86: Área Colhida - Tangerina"
+                 ,"87":"87: Área Colhida - Urucum"
+                 ,"88":"88: Rendimento Médio da Produção - Banana (cacho)"
+                 ,"89":"89: Rendimento Médio da Produção - Borracha (látex coagulado)"
+                 ,"90":"90: Rendimento Médio da Produção - Castanha de caju"
+                 ,"91":"91: Rendimento Médio da Produção - Coco-da-baía"
+                 ,"92":"92: Rendimento Médio da Produção - Laranja"
+                 ,"93":"93: Rendimento Médio da Produção - Limão"
+                 ,"94":"94: Rendimento Médio da Produção - Mamão"
+                 ,"95":"95: Rendimento Médio da Produção - Manga"
+                 ,"96":"96: Rendimento Médio da Produção - Maracujá"
+                 ,"97":"97: Rendimento Médio da Produção - Pimenta-do-Reino"
+                 ,"98":"98: Rendimento Médio da Produção - Tangerina"
+                 ,"99":"99: Rendimento Médio da Produção - Urucum (semente)"
+                 ,"100":"100: Valor da Produção Total - Lavoura Permanente"
+                 ,"100":" 100: Valor da Produção Total - Lavoura Permanente"
+                 ,"101":"101: Valor da Produção - Banana (cacho)"
+                 ,"102":"102: Valor da Produção - Borracha (látex coagulado)"
+                 ,"103":"103: Valor da Produção - Castanha de caju"
+                 ,"104":"104: Valor da Produção - Coco-da-baía"
+                 ,"105":"105: Valor da Produção - Laranja"
+                 ,"106":"106: Valor da Produção - Limão"
+                 ,"107":"107: Valor da Produção - Mamão"
+                 ,"108":"108: Valor da Produção - Manga"
+                 ,"109":"109: Valor da Produção - Maracujá"
+                 ,"110":"110: Valor da Produção - Pimenta-do-Reino"
+                 ,"111":"111: Valor da Produção - Tangerina"
+                 ,"112":"112: Valor da Produção - Urucum (semente)"
+                 ,"113":"113: Quantidade Produzida - Carvão Vegetal de Eucalipto "
+                 ,"114":"114: Quantidade Produzida - Carvão Vegetal de Pinus "
+                 ,"115":"115: Quantidade Produzida - Carvão Vegetal de Outras Espécies "
+                 ,"116":"116: Quantidade Produzida - Lenha de Eucalipto"
+                 ,"117":"117: Quantidade Produzida - Lenha de Pinus"
+                 ,"118":"118: Quantidade Produzida - Lenha de Outras Espécies"
+                 ,"119":"119: Quantidade Produzida - Madeira em Tora para Papel e Celulose"
+                 ,"120":"120: Quantidade Produzida - Madeira em Tora para Outras Finalidades"
+                 ,"121":"121: Valor da Produção - Carvão Vegetal de Eucalipto"
+                 ,"122":"122: Valor da Produção - Carvão Vegetal de Pinus"
+                 ,"123":"123: Valor da Produção - Carvão Vegetal de Outras Espécies"
+                 ,"124":"124: Valor da Produção - Lenha de Eucalipto"
+                 ,"125":"125: Valor da Produção - Lenha de Pinus"
+                 ,"126":"126: Valor da Produção - Lenha de Outras Espécies "
+                 ,"127":"127: Valor da Produção - Madeira em Tora para Papel e Celulose "
+                 ,"128":"128: Valor da Produção - Madeira em Tora para Outras Finalidades "
+                 ,"129":"129: Valor da Produção Total - Silvicultura"
+                 ,"130":"130: Quantidade Produzida - Alimentícios - Açaí (fruto)"
+                 ,"131":"131: Quantidade Produzida - Alimentícios - Castanha de Caju"
+                 ,"132":"132: Quantidade Produzida - Alimentícios - Mangaba (fruto)"
+                 ,"133":"133: Quantidade Produzida - Alimentícios - Pequi (fruto)"
+                 ,"134":"134: Quantidade Produzida - Alimentícios - Outros"
+                 ,"135":"135: Valor da Produção - Alimentícios - Açaí (fruto)"
+                 ,"136":"136: Valor da Produção - Alimentícios - Castanha de Caju"
+                 ,"137":"137: Valor da Produção - Alimentícios - Mangaba (fruto)"
+                 ,"138":"138: Valor da Produção - Alimentícios - Pequi (fruto)"
+                 ,"139":"139: Valor da Produção - Alimentícios - Outros"
+                 ,"140":"140: Valor da Produção Total - Extrativismo Vegetal"
+                 ,"141":"141: Quantidade Produzida - Aromáticos, Medicinais, Tóxicos e Corantes - Jaborandi(folha)"
+                 ,"142":"142: Quantidade Produzida - Aromáticos, Medicinais, Tóxicos e Corantes - Outros"
+                 ,"143":"143: Quantidade Produzida - Ceras - Carnaúba (cera)"
+                 ,"144":"144: Quantidade Produzida - Ceras - Carnaúba (pó)"
+                 ,"145":"145: Quantidade Produzida - Fibras - Buriti"
+                 ,"146":"146: Quantidade Produzida - Fibras - Carnaúba"
+                 ,"147":"147: Quantidade Produzida - Fibras - Piaçava"
+                 ,"148":"148: Quantidade Produzida - Fibras - Outras"
+                 ,"149":"149: Quantidade Produzida - Carvão Vegetal"
+                 ,"150":"150: Quantidade Produzida - Lenha"
+                 ,"151":"151: Quantidade Produzida - Madeira em Tora"
+                 ,"152":"152: Quantidade Produzida - Oleaginosos - Babaçu (amêndoa)"
+                 ,"153":"153: Quantidade Produzida - Oleaginosos - Pequi (amêndoa)"
+                 ,"154":"154: Quantidade Produzida - Oleaginosos - Tucum (amêndoa)"
+                 ,"155":"155: Quantidade Produzida - Oleaginosos - Outros"
+                 ,"156":"156: Valor da Produção - Aromáticos, Medicinais, Tóxicos e Corantes - Jaborandi(folha)"
+                 ,"157":"157: Valor da Produção - Aromáticos, Medicinais, Tóxicos e Corantes - Outros"
+                 ,"158":"158: Valor da Produção - Ceras - Carnaúba (cera)"
+                 ,"159":"159: Valor da Produção - Ceras - Carnaúba (pó)"
+                 ,"160":"160: Valor da Produção - Fibras - Buriti"
+                 ,"161":"161: Valor da Produção - Fibras - Carnaúba"
+                 ,"162":"162: Valor da Produção - Fibras - Piaçava"
+                 ,"163":"163: Valor da Produção - Fibras - Outras"
+                 ,"164":"164: Valor da Produção - Carvão Vegetal"
+                 ,"165":"165: Valor da Produção - Lenha"
+                 ,"166":"166: Valor da Produção - Madeira em Tora"
+                 ,"167":"167: Valor da Produção - Oleaginosos - Babaçu (amêndoa)"
+                 ,"168":"168: Valor da Produção - Oleaginosos - Pequi (amêndoa)"
+                 ,"169":"169: Valor da Produção - Oleaginosos - Tucum (amêndoa)"
+                 ,"170":"170: Valor da Produção - Oleaginosos - Outros"
+                 ,"171":"171: Quantidade - Leite"
+                 ,"172":"172: Quantidade - Ovos de Galinha"
+                 ,"173":"173: Quantidade - Ovos de Codorna"
+                 ,"174":"174: Quantidade - Mel de Abelha"
+                 ,"175":"175: Quantidade - Casulos do Bicho-da-Seda"
+                 ,"176":"176: Quantidade - Lã"
+                 ,"177":"177: Valor da Produção - Leite"
+                 ,"178":"178: Valor da Produção - Ovos de Galinha"
+                 ,"179":"179: Valor da Produção - Ovos de Codorna"
+                 ,"180":"180: Valor da Produção - Mel de Abelha"
+                 ,"181":"181: Valor da Produção - Casulos do Bicho-da-Seda"
+                 ,"182":"182: Valor da Produção - Lã"
+                 ,"183":"183: Valor da Produção Total - Produção de Origem Animal"
+                 ,"184":"184: Quantidade - Carpa"
+                 ,"185":"185: Quantidade - Curimatã, Curimbatá"
+                 ,"186":"186: Quantidade - Jatuarana, Piabanha e Piracanjuba"
+                 ,"187":"187: Quantidade - Matrinxã"
+                 ,"188":"188: Quantidade - Pacu e Patinga"
+                 ,"189":"189: Quantidade - Piau, Piapara, Piauçu, Piava"
+                 ,"190":"190: Quantidade - Pintado, Cachara, Cachapira e Pintachara, Surubim"
+                 ,"191":"191: Quantidade - Pirapitinga"
+                 ,"192":"192: Quantidade - Pirarucu"
+                 ,"193":"193: Quantidade - Tambacu, Tambatinga"
+                 ,"194":"194: Quantidade - Tambaqui"
+                 ,"195":"195: Quantidade - Tilápia"
+                 ,"196":"196: Quantidade - Traíra e Trairão"
+                 ,"197":"197: Quantidade - Tucunaré"
+                 ,"198":"198: Quantidade - Outros Peixes"
+                 ,"199":"199: Quantidade - Alevinos"
+                 ,"200":"200: Quantidade - Camarão"
+                 ,"201":"201:Quantidade - Ostras, Vieiras e Mexilhões"
+                 ,"202":"202:Valor da Produção - Carpa"
+                 ,"203":"203:Valor da Produção - Curimatã, curimbatá"
+                 ,"204":"204:Valor da Produção - Jatuarana, Piabanha e Piracanjuba"
+                 ,"205":"205:Valor da Produção - Matrinxã"
+                 ,"206":"206:Valor da Produção - Pacu e Patinga"
+                 ,"207":"207:Valor da Produção - Piau, Piapara, Piauçu, Piava"
+                 ,"208":"208:Valor da Produção - Pintado, Cachara, Cachapira e Pintachara, Surubim"
+                 ,"209":"209:Valor da Produção - Pirapitinga"
+                 ,"210":"210:Valor da Produção - Pirarucu"
+                 ,"211":"211:Valor da Produção - Tambacu, Tambatinga"
+                 ,"212":"212:Valor da Produção - Tambaqui"
+                 ,"213":"213:Valor da Produção - Tilápia"
+                 ,"214":"214:Valor da Produção - Traíra e Trairão"
+                 ,"215":"215:Valor da Produção - Tucunaré"
+                 ,"216":"216:Valor da Produção - Outros Peixes"
+                 ,"217":"217:Valor da Produção - Alevinos"
+                 ,"218":"218:Valor da Produção - Camarão"
+                 ,"219":"219:Valor da Produção - Ostras, Vieiras e Mexilhões"
+                 ,"220":"220:Valor da Produção Total - Aquicultura"
+                 ,"221":"221:Efetivo de Rebanho Bovino"
+                 ,"222":"222:Efetivo de Rebanho Bubalino"
+                 ,"223":"223:Efetivo de Rebanho Equino"
+                 ,"224":"224:Efetivo de Rebanho Suíno - Total"
+                 ,"225":"225:Efetivo de Rebanho Suíno - Matrizes de Suínos"
+                 ,"226":"226:Efetivo de Rebanho Caprino"
+                 ,"227":"227:Efetivo de Rebanho Ovino"
+                 ,"228":"228:Efetivo de Rebanho Galináceos - Total"
+                 ,"229":"229:Efetivo de Rebanho Galináceos - Galinhas"
+                 ,"230":"230:Efetivo de Rebanho Codornas"
+                 ,"235":"235:Quantidade Produzida - Oleaginosos - Copaíba (óleo)"
+                 ,"240":"240:Valor da Produção - Oleaginosos - Copaíba (óleo)"
+                 ,"255":"255:Quantidade Produzida - Carvão Vegetal - Total"
+                 ,"257":"257:Quantidade Produzida - Lenha - Total"
+                 ,"259":"259:Quantidade Produzida - Madeira em Tora - Total"
+                 ,"260":"260:Valor Adicionado Bruto da Administração, Defesa, Educação e Saúde Públicas e Seguridade Social a Preços Correntes - Municipal"
+                 ,"261":"261:Valor da Produção - Carvão Vegetal - Total"
+                 ,"268":"268 Cor ou raça - Branca"
+                 ,"269":"269 Cor ou raça - Parda"
+                 ,"278":"278:População de 14 anos ou mais de idade, ocupada na semana de referência, com rendimento (mil pessoas)"
+                 ,"279":"279 gênero - Homens"
+                 ,"280":"280 gênero - Mulheres"
+                 ,"281":"281 Nível de instrução mais elevado alcançado - Sem instrução"
+                 ,"282":"282 Nível de instrução mais elevado alcançado - Ensino fundamental incompleto ou equivalente"
+                 ,"283":"283 Nível de instrução mais elevado alcançado - Ensino fundamental completo ou equivalente"
+                 ,"284":"284 Nível de instrução mais elevado alcançado - Ensino médio incompleto ou equivalente"
+                 ,"285":"285 Nível de instrução mais elevado alcançado - Ensino médio completo ou equivalente"
+                 ,"286":"286 Nível de instrução mais elevado alcançado - Ensino superior incompleto ou equivalente"
+                 ,"287":"287 Nível de instrução mais elevado alcançado - Ensino superior completo ou equivalente"
+                 ,"288":"288:Rendimento médio mensal real das pessoas de 14 anos ou mais de idade, de todos os trabalhos, a preços médios do ano"
+                 ,"289":"289:Rendimento médio gênero - Homens"
+                 ,"290":"290:Rendimento médio gênero - Mulheres"
+                 ,"291":"291:Rendimento médio Cor ou raça - Branca"
+                 ,"292":"292:Rendimento médio Cor ou raça - Parda"
+                 ,"293":"293:Rendimento médio Cor ou raça - Preta"
+                 ,"294":"294:Rendimento médio Nível de instrução mais elevado alcançado - Sem instrução"
+                 ,"295":"295:Rendimento médio Nível de instrução mais elevado alcançado - Ensino fundamental incompleto ou equivalente"
+                 ,"296":"296:Rendimento médio mensal real das pessoas de 14 anos ou mais de idade, de todos ostrabalhos, a preços médios do ano - Nível de instrução mais elevado alcançado - Ensino fundamental completo ou equivalente"
+                 ,"297":"297:Rendimento médio Nível de instrução mais elevado alcançado - Ensino médio incompleto ou equivalente"
+                 ,"298":"298:Rendimento médio Nível de instrução mais elevado alcançado - Ensino médio completo ou equivalente"
+                 ,"299":"299:Rendimento médio mensal real das pessoas de 14 anos ou mais de idade, de todos ostrabalhos, a preços médios do ano - Nível de instrução mais elevado alcançado - Ensino superior incompleto ou equivalente"
+                 ,"300":"300:Rendimento médio Nível de instrução mais elevado alcançado - Ensino superior completo ou equivalente"
+                 ,"394":"394:População Residente - Urbana"
+                 ,"395":"395:População Residente - Rural"
+                 ,"396":"396:População Residente - Homens"
+                 ,"397":"397:População Residente - Mulheres"
+                 ,"398":"398: População Residente - Branca"
+                 ,"399":"399:População Residente - Preta"
+                 ,"400":"400:População Residente - Amarela"
+                 ,"401":"401:População Residente - Parda"
+                 ,"402":"402:População Residente - Indígena"
+                 ,"403":"403:População Residente - Sem declaração Racial"
+                 ,"426":"426:Contagem da População 2007"
+                 ,"879":"879:Valor da Produção - Lenha - Total"
+                 ,"882":"882: População de 14 anos ou mais de idade, ocupada na semana de referência, com rendimento - Cor ou raça - Preta"}
+                 for (let [key, value] of Object.entries(series_0)) {
+                    $('#select_serie').append(`<option value=${key} style='width:40px'>${value.substr(0, 80)}</option>`);
+                 }
+
+        dicio = {
+            1: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-40/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2688]",
+            2: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-40/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2689]",
+            3: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-40/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2691]",
+            4: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-40/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2692]",
+            5: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2694]",
+            6: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2696]",
+            7: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2701]",
+            8: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2702]",
+            9: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2708]",
+            10: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2709]",
+            11: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2710]",
+            12: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2711]",
+            13: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2713]",
+            14: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2714]",
+            15: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2715]",
+            16: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[0]",
+            17: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2688]",
+            18: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2689]",
+            19: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2691]",
+            20: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2692]",
+            21: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2694]",
+            22: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2696]",
+            23: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2701]",
+            24: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2702]",
+            25: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2708]",
+            26: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2709]",
+            27: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2710]",
+            28: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2711]",
+            29: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2713]",
+            30: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2714]",
+            31: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2715]",
+            32: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2688]",
+            33: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2689]",
+            34: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2691]",
+            35: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2692]",
+            36: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2694]",
+            37: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2696]",
+            38: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2701]",
+            39: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2702]",
+            40: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2708]",
+            41: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2709]",
+            42: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2710]",
+            43: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2711]",
+            44: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2713]",
+            45: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2714]",
+            46: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2715]",
+            47: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[0]",
+            48: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2688]",
+            49: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2689]",
+            50: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2691]",
+            51: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2692]",
+            52: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2694]",
+            53: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2696]",
+            54: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2701]",
+            55: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2702]",
+            56: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2708]",
+            57: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2709]",
+            58: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2710]",
+            59: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2711]",
+            60: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2713]",
+            61: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2714]",
+            62: "https://servicodados.ibge.gov.br/api/v3/agregados/1612/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=81[2715]",
+            63: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2720]",
+            64: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2721]",
+            65: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2725]",
+            66: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2727]",
+            67: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2733]",
+            68: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2734]",
+            69: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2736]",
+            70: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2737]",
+            71: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2738]",
+            72: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2743]",
+            73: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2745]",
+            74: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/214?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2747]",
+            75: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[0]",
+            76: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2720]",
+            77: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2721]",
+            78: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2725]",
+            79: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2727]",
+            80: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2733]",
+            81: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2734]",
+            82: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2736]",
+            83: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2737]",
+            84: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2738]",
+            85: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2743]",
+            86: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2745]",
+            87: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/216?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2747]",
+            88: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2720]",
+            89: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2721]",
+            90: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2725]",
+            91: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2727]",
+            92: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2733]",
+            93: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2734]",
+            94: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2736]",
+            95: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2737]",
+            96: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2738]",
+            97: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2743]",
+            98: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2745]",
+            99: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/112?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2747]",
+            100: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[0]",
+            101: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2720]",
+            102: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2721]",
+            103: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2725]",
+            104: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2727]",
+            105: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2733]",
+            106: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2734]",
+            107: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2736]",
+            108: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2737]",
+            109: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2738]",
+            110: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2743]",
+            111: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2745]",
+            112: "https://servicodados.ibge.gov.br/api/v3/agregados/1613/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=82[2747]",
+            113: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33247]",
+            114: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33248]",
+            115: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33249]",
+            116: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33250]",
+            117: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33251]",
+            118: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33252]",
+            119: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3458]",
+            120: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3459]",
+            121: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33247]",
+            122: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33248]",
+            123: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33249]",
+            124: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33250]",
+            125: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33251]",
+            126: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[33252]",
+            127: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3458]",
+            128: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3459]",
+            129: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[0]",
+            130: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3403]",
+            131: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3404]",
+            132: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3407]",
+            133: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[39409]",
+            134: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[11296]",
+            135: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3403]",
+            136: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3404]",
+            137: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3407]",
+            138: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[39409]",
+            139: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[11296]",
+            140: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[0]",
+            141: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3413]",
+            142: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3415]",
+            143: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3421]",
+            144: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3422]",
+            145: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3424]",
+            146: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3425]",
+            147: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3426]",
+            148: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3427]",
+            149: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3433]",
+            150: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]]&classificacao=193[3434]",
+            151: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]]&classificacao=193[3435]",
+            152: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]]&classificacao=193[3439]",
+            153: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]}]&classificacao=193[3444]",
+            154: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]]&classificacao=193[3445]",
+            155: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3446]",
+            156: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3413]|193[3413]",
+            157: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3415]|193[3415]",
+            158: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3421]|193[3421]",
+            159: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3422]|193[3422]",
+            160: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3424]|193[3424]",
+            161: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3425]|193[3425]",
+            162: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3426]|193[3426]",
+            163: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3427]|193[3427]",
+            164: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3433]|193[3433]",
+            165: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3434]|193[3434]",
+            166: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3435]|193[3435]",
+            167: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3439]|193[3439]",
+            168: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3444]|193[3444]",
+            169: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3445]|193[3445]",
+            170: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3446]|193[3446]",
+            171: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/106?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2682]",
+            172: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/106?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2685]",
+            173: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/106?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2686]",
+            174: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/106?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2687]",
+            175: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/106?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2683]",
+            176: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/106?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2684]",
+            177: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2682]",
+            178: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2685]",
+            179: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2686]",
+            180: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2687]",
+            181: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2683]",
+            182: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[2684]",
+            183: "https://servicodados.ibge.gov.br/api/v3/agregados/74/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=80[0]",
+            184: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32861]",
+            185: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32865]",
+            186: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32867]",
+            187: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32869]",
+            188: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32870]",
+            189: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32871]",
+            190: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32872]",
+            191: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32873]",
+            192: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32874]",
+            193: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32875]",
+            194: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32876]",
+            195: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32877]",
+            196: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32878]",
+            197: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32880]",
+            198: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32881]",
+            199: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32886]",
+            200: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32887]",
+            201: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/4146?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32889]",
+            202: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32861]",
+            203: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32865]",
+            204: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32867]",
+            205: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32869]",
+            206: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32870]",
+            207: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32871]",
+            208: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32872]",
+            209: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32873]",
+            210: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32874]",
+            211: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32875]",
+            212: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32876]",
+            213: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32877]",
+            214: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32878]",
+            215: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32880]",
+            216: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32881]",
+            217: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32886]",
+            218: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32887]",
+            219: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[32889]",
+            220: "https://servicodados.ibge.gov.br/api/v3/agregados/3940/periodos/-22/variaveis/215?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=654[0]",
+            221: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[2670]",
+            222: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[2675]",
+            223: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[2672]",
+            224: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[32794]",
+            225: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[32795]",
+            226: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[2681]",
+            227: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[2677]",
+            228: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[32796]",
+            229: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[32793]",
+            230: "https://servicodados.ibge.gov.br/api/v3/agregados/3939/periodos/-22/variaveis/105?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=79[2680]",
+            231: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/37?localidades=N1[all]|N3[all]",
+            233: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/498?localidades=N1[all]|N3[all]",
+            234: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/513?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]",
+            235: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/144?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3440]",
+            240: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3440]",
+            251: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/37?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            252: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/543?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            253: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/498?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            254: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/513?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            255: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3455]",
+            256: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/517?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            257: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3456]",
+            258: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/6575?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            259: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/142?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3457]",
+            260: "https://servicodados.ibge.gov.br/api/v3/agregados/5938/periodos/-22/variaveis/525?localidades=N1[all]|N6[N3[21]]|N2[all]|N3[all]",
+            261: "https://servicodados.ibge.gov.br/api/v3/agregados/291/periodos/-22/variaveis/143?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=194[3455]",
+            268: "https://servicodados.ibge.gov.br/api/v3/agregados/7431/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[2776]",
+            269: "https://servicodados.ibge.gov.br/api/v3/agregados/7431/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[2779]",
+            278: "https://servicodados.ibge.gov.br/api/v3/agregados/7431/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[95251]",
+            279: "https://servicodados.ibge.gov.br/api/v3/agregados/7434/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=2[4]",
+            280: "https://servicodados.ibge.gov.br/api/v3/agregados/7434/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=2[5]",
+            281: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[18837]",
+            282: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11779]",
+            283: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11628]",
+            284: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11629]",
+            285: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11630]",
+            286: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11631]",
+            287: "https://servicodados.ibge.gov.br/api/v3/agregados/7433/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[99713]",
+            288: "https://servicodados.ibge.gov.br/api/v3/agregados/7444/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=2[6794]",
+            289: "https://servicodados.ibge.gov.br/api/v3/agregados/7444/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=2[4]",
+            290: "https://servicodados.ibge.gov.br/api/v3/agregados/7444/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=2[5]",
+            291: "https://servicodados.ibge.gov.br/api/v3/agregados/7441/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[2776]",
+            292: "https://servicodados.ibge.gov.br/api/v3/agregados/7441/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[2779]",
+            293: "https://servicodados.ibge.gov.br/api/v3/agregados/7441/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[2777]",
+            294: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[18837]",
+            295: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11779]",
+            296: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11628]",
+            297: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11629]",
+            298: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11630]",
+            299: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[11631]",
+            300: "https://servicodados.ibge.gov.br/api/v3/agregados/7443/periodos/-22/variaveis/10774?localidades=N1[all]|N2[all]|N3[all]&classificacao=1568[99713]",
+            393: "https://servicodados.ibge.gov.br/api/v3/agregados/1301/periodos/-22/variaveis/616?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]",
+            394: "https://servicodados.ibge.gov.br/api/v3/agregados/200/periodos/-22/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=1[1]",
+            395: "https://servicodados.ibge.gov.br/api/v3/agregados/200/periodos/-22/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=1[2]",
+            396: "https://servicodados.ibge.gov.br/api/v3/agregados/200/periodos/-3/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=2[4]",
+            397: "https://servicodados.ibge.gov.br/api/v3/agregados/200/periodos/-22/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=2[5]",
+            398: "https://servicodados.ibge.gov.br/api/v3/agregados/136/periodos/2000|2010/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=86[2776]",
+            399: "https://servicodados.ibge.gov.br/api/v3/agregados/136/periodos/2000|2010/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=86[2777]",
+            400: "https://servicodados.ibge.gov.br/api/v3/agregados/136/periodos/2000|2010/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=86[2778]",
+            401: "https://servicodados.ibge.gov.br/api/v3/agregados/136/periodos/2000|2010/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=86[2779]",
+            402: "https://servicodados.ibge.gov.br/api/v3/agregados/136/periodos/2000|2010/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=86[2780]",
+            403: "https://servicodados.ibge.gov.br/api/v3/agregados/136/periodos/2000|2010/variaveis/93?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=86[2781]",
+            879: "https://servicodados.ibge.gov.br/api/v3/agregados/289/periodos/-22/variaveis/145?localidades=N1[all]|N2[all]|N3[all]|N6[N3[21]]&classificacao=193[3434]",
+            882: "https://servicodados.ibge.gov.br/api/v3/agregados/7431/periodos/-22/variaveis/10765?localidades=N1[all]|N2[all]|N3[all]&classificacao=86[2777]"
+        }
+        atualizar();
+        $('input[type=radio][name=radio1]').change(function() {trocaNivel()});
+
+        function fnExcelReport() {
+            var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+            var textRange;
+            var j = 0;
+            tab = document.getElementById('data-table'); // id of table
+
+            for (j = 0; j < tab.rows.length; j++) {
+                tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+
+            tab_text = tab_text + "</table>";
+            tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, ""); //remove if u want links in your table
+            tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+            {
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            } else //other browser not tested on IE 11
+                sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+            return (sa);
+        }
+
+        function atualizar() {
+            $('#load').append('<img id="load_screen" src="https://cdn.pixabay.com/animation/2022/07/29/03/42/03-42-15-221_512.gif" style=" top:400px; left:50%;max-width:60px; max-heigth:60px; text-align: center;"></img>');
+            $("#select_serie").prop('disabled',true);     
+            $('#myChart').remove(); // this is my <canvas> element
+            document.getElementById("data-table").innerHTML = "<strong>Aguarde, gerando a tabela...</strong>"
+            document.getElementById("titulo").innerHTML = "Nome: Aguarde, atualizando os dados..."
+            document.getElementById("subtitulo").innerHTML = "Categoria: Aguarde, atualizando os dados..."
+            document.getElementById("unity").innerHTML = "Unidade: Aguarde, atualizando os dados..."
+            let serie = document.getElementById("select_serie").value
+            let url = dicio[serie];
+            var table = document.getElementById("data-table")
+            atualizeEst();
+            trocaNivel();
+            $('#load_screen').remove(); // this is my <canvas> element
+            $("#select_serie").prop('disabled',false);
+                    
+                }
+          
+
+      
+        function atualizaGraph(datr, nome_cidade,titulo,cat) {
+            resetCanvas();
+            
+            let first = Object.keys(datr)
+            let second = Object.values(datr)
+            var tipo=document.querySelector('input[name="radio1"]:checked').value;
+            if(tipo=='bar'){var color1='purple';var preench=true}else if(tipo=='line'){color1='purple';preench=false}else if(tipo == 'doughnut'){var color1=["#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA","#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA","#0074D9", "#FF4136", "#2ECC40", "#FF851B", "#7FDBFF", "#B10DC9", "#FFDC00", "#001f3f", "#39CCCC", "#01FF70", "#85144b", "#F012BE", "#3D9970", "#111111", "#AAAAAA"];var preench = true}
+            new Chart("myChart", {
+                type: tipo,
+                options: {
+                title: {
+                display: true,
+                fontSize:18,
+                text: [titulo,cat,nome_cidade],
+                },
+                },
+                data: {
+                    labels: first,
+                    datasets: [{
+                        label: nome_cidade,
+                        backgroundColor:color1,
+                        fill: preench,
+                        data: second
+                    }]},
+                    
+
+        }
+    )
+
+}
+
+        function resetCanvas() {
+            $('#myChart').remove(); // this is my <canvas> element
+            $('#chart-wrapper').append('<canvas id="myChart" height="40vh" width="80vw" ><canvas>');
+
+        };
+
+
+        function trocaNivel() {
+            let serie = document.getElementById("select_serie").value
+            let url = dicio[serie];
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+
+                    var series_1 = data[0]["resultados"][0]["series"]
+                    var anos_chave = Object.keys(data[0]["resultados"][0]["series"][0]["serie"])
+                    var title=`Série: ${data[0]['resultados'][0]['classificacoes'][0]['nome']}`
+                    var categoria=`Categoria: ${Object.entries(data[0]['resultados'][0]['classificacoes'][0]['categoria'])[0][1]}`
+                    for (i in series_1) {
+                        series_2 = data[0]["resultados"][0]["series"][i]["serie"]
+                        local = series_1[i]["localidade"]["nome"]
+                        local_sec = document.getElementById("cidade").value
+                        if (local == local_sec) { atualizaGraph(series_2, local,title,categoria); }
+
+
+                    };
+
+
+
+                })
+                
+        };
+
+        var regs = ["Norte", "Nordeste", "Sul", "Sudeste", "Centro-Oeste"]
+        function atualizeRegs() {
+          $("#cidade").val('Nordeste')
+          trocaNivel();
+            document.getElementById("data-table").innerHTML = ""
+            let serie = document.getElementById("select_serie").value
+            let url = dicio[serie];
+            var table = document.getElementById("data-table")
+
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    var anos_chave = Object.keys(data[0]["resultados"][0]["series"][0]["serie"])
+                    var row = table.insertRow();
+                    cellB = row.insertCell();
+                    cellB.innerHTML = `<td style='200px'><strong>${series_0[serie].split(':')[1]}</strong></td>`
+                    var row = table.insertRow();
+                    cellA = row.insertCell();
+                    cellA.innerHTML = "<strong style=>Localidade</strong>"
+                    for (i in anos_chave) {
+                        cellA = row.insertCell();
+                        cellA.innerHTML = `<strong>${anos_chave[i]}</strong>`;
+                    }
+                    var series_1 = data[0]["resultados"][0]["series"]
+
+                    for (i in series_1) {
+                        var row = table.insertRow();
+                        series_2 = data[0]["resultados"][0]["series"][i]["serie"]
+                        local = series_1[i]["localidade"]["nome"]
+                        if (regs.includes(local)) {
+                            cellA = row.insertCell();
+                            cellA.innerHTML = `<strong>${local}</strong>`;
+                            for (let [key, value] of Object.entries(series_2)) {
+                                cellA = row.insertCell();
+                                cellA.innerHTML = value;
+                            }
+                        }
+                    }
+             document.getElementById("titulo").innerHTML = `Nome: ${data[0]['resultados'][0]['classificacoes'][0]['nome']}`
+            document.getElementById("subtitulo").innerHTML = `Categoria: ${Object.entries(data[0]['resultados'][0]['classificacoes'][0]['categoria'])[0][1]}`
+            document.getElementById("unity").innerHTML = `Unidade: ${data[0]['unidade']}`
+
+                })
+        }
+        var bra = ["Brasil"]
+        function atualizeBra() {
+          $("#cidade").val('Brasil')
+          trocaNivel();
+            document.getElementById("data-table").innerHTML = ""
+            let serie = document.getElementById("select_serie").value
+            let url = dicio[serie];
+            var table = document.getElementById("data-table")
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    var anos_chave = Object.keys(data[0]["resultados"][0]["series"][0]["serie"])
+                    var row = table.insertRow();
+                    cellB = row.insertCell();
+                    cellB.innerHTML = `<td style='200px'><strong>${series_0[serie].split(':')[1]}</strong></td>`
+                    var row = table.insertRow();
+                    cellA = row.insertCell();
+                    cellA.innerHTML = "<strong>Localidade</strong>"
+                    for (i in anos_chave) {
+                        cellA = row.insertCell();
+                        cellA.innerHTML = `<strong>${anos_chave[i]}</strong>`;
+        
+                    }
+                    var series_1 = data[0]["resultados"][0]["series"]
+
+                    for (i in series_1) {
+                        var row = table.insertRow();
+                        series_2 = data[0]["resultados"][0]["series"][i]["serie"]
+                        local = series_1[i]["localidade"]["nome"]
+                        
+                        if (bra.includes(local)) {
+                            cellA = row.insertCell();
+                            cellA.innerHTML = `<strong>${local}</strong>`;
+                            for (let [key, value] of Object.entries(series_2)) {
+                                cellA = row.insertCell();
+                                cellA.innerHTML = value;
+                            }
+                        }
+                    }
+            document.getElementById("titulo").innerHTML = `Nome: ${data[0]['resultados'][0]['classificacoes'][0]['nome']}`
+            document.getElementById("subtitulo").innerHTML = `Categoria: ${Object.entries(data[0]['resultados'][0]['classificacoes'][0]['categoria'])[0][1]}`
+            document.getElementById("unity").innerHTML = `Unidade: ${data[0]['unidade']}`
+
+                })
+               
+        }
+
+
+        var muni = ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Sul", "Rio Grande do Norte", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins", "Norte", "Sul", "Nordeste", "Centro-Oeste", "Sudeste", "Brasil"]
+        function atualizeMuni() {
+          $("#cidade").val('São Luís - MA')
+          trocaNivel();
+            document.getElementById("data-table").innerHTML = ""
+            let serie = document.getElementById("select_serie").value
+            let url = dicio[serie];
+            var table = document.getElementById("data-table")
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    var anos_chave = Object.keys(data[0]["resultados"][0]["series"][0]["serie"])
+                    var row = table.insertRow();
+                    cellB = row.insertCell();
+                    cellB.innerHTML = `<td style='200px'><strong>${series_0[serie].split(':')[1]}</strong></td>`
+                    var row = table.insertRow();
+                    cellA = row.insertCell();
+                    cellA.innerHTML = "<strong>Localidade</strong>"
+                    for (i in anos_chave) {
+                        cellA = row.insertCell();
+                        cellA.innerHTML = `<strong>${anos_chave[i]}</strong>`;
+       
+                    }
+                    var series_1 = data[0]["resultados"][0]["series"]
+
+                    for (i in series_1) {
+                        var row = table.insertRow();
+                        series_2 = data[0]["resultados"][0]["series"][i]["serie"]
+                        local = series_1[i]["localidade"]["nome"]
+
+                        if (!muni.includes(local)) {
+                            cellA = row.insertCell();
+                            cellA.innerHTML = `<strong>${local}</strong>`;
+                            for (let [key, value] of Object.entries(series_2)) {
+                                cellA = row.insertCell();
+                                cellA.innerHTML = value;
+                            }
+                        }
+                    }
+             
+                })
+        }
+        var est = ["Acre", "Alagoas", "Amapá", "Amazonas", "Bahia", "Ceará", "Distrito Federal", "Espírito Santo", "Goiás", "Maranhão", "Mato Grosso", "Mato Grosso do Sul", "Minas Gerais", "Pará", "Paraíba", "Paraná", "Pernambuco", "Piauí", "Rio de Janeiro", "Rio Grande do Sul", "Rio Grande do Norte", "Rondônia", "Roraima", "Santa Catarina", "São Paulo", "Sergipe", "Tocantins"]
+        function atualizeEst() {
+          $("#cidade").val('Maranhão')
+          trocaNivel();
+            document.getElementById("data-table").innerHTML = ""
+            let serie = document.getElementById("select_serie").value
+            let url = dicio[serie];
+            var table = document.getElementById("data-table")
+            fetch(url)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    var anos_chave = Object.keys(data[0]["resultados"][0]["series"][0]["serie"])
+                    var row = table.insertRow();
+                    cellB = row.insertCell();
+                    cellB.innerHTML = `<td style='200px'><strong>${series_0[serie].split(':')[1]}</strong></td>`
+                    var row = table.insertRow();
+                    cellA = row.insertCell();
+                    cellA.innerHTML = "<strong>Localidade</strong>"
+                    for (i in anos_chave) {
+                        cellA = row.insertCell();
+                        cellA.innerHTML = `<strong>${anos_chave[i]}</strong>`;
+            
+                    }
+                    var series_1 = data[0]["resultados"][0]["series"]
+
+                    for (i in series_1) {
+                        var row = table.insertRow();
+                        series_2 = data[0]["resultados"][0]["series"][i]["serie"]
+                        local = series_1[i]["localidade"]["nome"]
+                        $('#cidade').append(`<option value="${local}">${local}</option>`);
+                        if (est.includes(local)) {
+                            cellA = row.insertCell();
+                            cellA.innerHTML = `<strong>${local}</strong>`;
+                            for (let [key, value] of Object.entries(series_2)) {
+                                cellA = row.insertCell();
+                                cellA.innerHTML = value;
+                            }
+                        }
+                    }
+             document.getElementById("titulo").innerHTML = `Nome: ${data[0]['resultados'][0]['classificacoes'][0]['nome']}`
+            document.getElementById("subtitulo").innerHTML = `Categoria: ${Object.entries(data[0]['resultados'][0]['classificacoes'][0]['categoria'])[0][1]}`
+            document.getElementById("unity").innerHTML = `Unidade: ${data[0]['unidade']}`
+          
+                })
+        }
+</script>
+
+<style>
+
+    #container{
+        padding-bottom: 100px;
+    }
+
+
+    #myChart {
+        justify-content: center;
+        position: relative;
+        max-width: 65vw;
+        height: 20vh;
+        left:17%;
+    }
+
+    #mySidenav a {
+        position: absolute;
+        /* Position them relative to the browser window */
+        left: -150px;
+        /* Position them outside of the screen */
+        transition: 0.3s;
+        /* Add transition on hover */
+        padding: 15px;
+        /* 15px padding */
+        width: 190px;
+        /* Set a specific width */
+        text-decoration: none;
+        /* Remove underline */
+        font-size: 20px;
+        /* Increase font size */
+        color: white;
+        /* White text color */
+        border-radius: 0 5px 5px 0;
+        /* Rounded corners on the top right and bottom right side */
+    }
+
+    #mySidenav a:hover {
+        left: 0;
+        /* On mouse-over, make the elements appear as they should */
+    }
+
+    /* The about link: 20px from the top with a green background */
+    #about {
+        top: 20px;
+        background-color: #fa2a2a;
+    }
+
+    #blog {
+        top: 80px;
+        background-color: #557c9b;
+        /* Blue */
+    }
+
+    #projects {
+        top: 140px;
+        background-color: #62ac57;
+        /* Red */
+    }
+
+    #contact {
+        top: 200px;
+        background-color: #e0d427
+            /* Light Black */
+    }
+
+    @import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:300);
+
+    body {
+        font-family: 'Alegreya Sans', sans-serif;
+    }
+
+    #data-table {
+        display: flex;
+        overflow-y: scroll;
+        font-size: 0.9em;
+        min-height:10px;
+        box-shadow: 2px 10px 10px 10x #e8e8e8;
+    }
+
+    tr {
+        background-color: white;
+        text-align: left;
+        width:100%;
+
+    }
+    td {
+        padding: 20px 35px;
+        min-width:150px;
+        width:200px;
+    }
+    
+
+    #logo {
+        /* position: absolute; */
+        top: 40px;
+        left: 100px;
+    
+    }
+
+    
+    #logo2 {
+        /* position: absolute; */
+      max-width: 200px;
+      max-height: 150px;
+
+    }
+
+    HTML CSSResult Skip Results Iframe EDIT ON body {
+        margin: 0;
+    }
+
+    h1 {
+
+        font-weight: 300;
+        letter-spacing: 2px;
+        font-size: 84px;
+
+    }
+
+    p {
+        letter-spacing: 1px;
+        font-size: 14px;
+        color: #333333;
+    }
+
+    .header {
+        /* position: relative; */
+        text-align: center;
+        background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
+        color: black;
+    }
+
+    .logo {
+        width: 50px;
+        fill: white;
+        padding-right: 15px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .inner-header {
+        /* margin-bottom: 20px; */
+        height: 20vh;
+        width: 100%;
+      
+    }
+
+    .flex {
+        /*Flexbox for containers*/
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .waves {
+        position: relative;
+        width: 100%;
+        height: 15vh;
+        margin-bottom: -7px;
+        /*Fix for safari gap*/
+        min-height: 100px;
+        max-height: 150px;
+    }
+
+    .content {
+        position: relative;
+        height: 20vh;
+        text-align: center;
+        background-color: white;
+    }
+
+    /* Animation */
+
+    .parallax>use {
+        animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
+    }
+
+    .parallax>use:nth-child(1) {
+        animation-delay: -2s;
+        animation-duration: 7s;
+    }
+
+    .parallax>use:nth-child(2) {
+        animation-delay: -3s;
+        animation-duration: 10s;
+    }
+
+    .parallax>use:nth-child(3) {
+        animation-delay: -4s;
+        animation-duration: 13s;
+    }
+
+    .parallax>use:nth-child(4) {
+        animation-delay: -5s;
+        animation-duration: 20s;
+    }
+
+    @keyframes move-forever {
+        0% {
+            transform: translate3d(-90px, 0, 0);
+        }
+
+        100% {
+            transform: translate3d(85px, 0, 0);
+        }
+    }
+footer{
+    height:250px;
+    background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
+}
+fieldset
+{
+  background-color:#ffffff;
+  display:flex;
+  max-width:300px;
+ top:-10px;
+}
+.radio_{
+    margin-left:20px;
+}
+</style>
