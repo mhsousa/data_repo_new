@@ -19,7 +19,7 @@
                 crossorigin="anonymous">
             
             <img src="https://imesc.ma.gov.br/src/img/govMA.png" id="logo" width="250" height="100">
-             <img src="https://imesc.ma.gov.br/src/img/logo1-novo.png" id="logo4" width="300" height="190">
+            
            
     
          
@@ -79,7 +79,6 @@
             <br>
             <br>
             <div style="position:absolute;right:0px">
-            <p>Escolha a cor para o gráfico:</p><input type="color" id="firstcolor" value="#0000" style="width:100px" onchange="trocaNivel()"></input>
             </div>
             <form id="graf_select">
                 <p>
@@ -98,9 +97,9 @@
             <button id="btnFilterReg" onclick="atualizeBra()" class="btn btn-outline-success" 
             >Download Gráfico </button>
         </div>
-
+        <input type="color" id="firstcolor" value="#000000" style="position:relative;width:20px;top:45px;left:20px;shape-outside: circle(100% at 30%)" onchange="trocaNivel()"></input>
         <div id="chart-wrapper" style="margin-top: 20px;" >
-            
+           
                 <canvas id="myChart" height="40vh" width="40vw"></canvas>
             </div>
         </div>
