@@ -94,20 +94,16 @@
             </fieldset>
             
             </form>
-                     <input type="color" id="firstcolor" value="#000000" style="position:relative;width:20px;right:20px;shape-outside: circle(100% at 30%)" onchange="trocaNivel()">
             <button id="btnFilterReg" onclick="atualizeBra()" class="btn btn-outline-success" 
             >Download Gráfico </button>
-           
-        
-            </div>
-         </input>
+        </div>
+        <p>Escolha a cor do gráfico:</p></p><input type="color" id="firstcolor" value="#000000" style="width:70px;top:45px;left:20px;shape-outside: circle(100% at 30%)" onchange="trocaNivel()"></input>
         <div id="chart-wrapper" style="margin-top: 20px;" >
            
                 <canvas id="myChart" height="40vh" width="40vw"></canvas>
             </div>
         </div>
         <div id="botoes" style=" margin-top: 20px;">
-            <br>
             <p>Filtros disponíveis:</p>
             <button id="btnFilterReg" onclick="atualizeBra()" class="btn btn-outline-primary"
                 >Brasil </button>
